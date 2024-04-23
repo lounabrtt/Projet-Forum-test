@@ -1,10 +1,8 @@
-
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,7 +14,6 @@ body {
     width: 80%;
     margin: 0 auto;
 }
-
 
 .btn {
     display: inline-block;
@@ -32,30 +29,28 @@ body {
     background-color: #555;
 }
 
+header, nav, main {
+    padding: 20px;
+    border-radius: 10px;
+}
 
 header {
     background-color: #333;
     color: #fff;
-    padding: 20px 0;
     text-align: center;
-    border-radius: 10px;
 }
 
 header h1 {
     font-size: 2em;
 }
 
-
 nav {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 0;
+    background-color: #f0e5e5;
     text-align: center;
 }
 
 nav ul {
     list-style: none;
-    text-align: center;
 }
 
 nav ul li {
@@ -68,11 +63,8 @@ nav ul li a {
     text-decoration: none;
 }
 
-
 main {
-    padding: 20px;
     background-color: #fff;
-    border-radius: 10px;
 }
 
 main h2 {
@@ -84,12 +76,11 @@ main p {
     line-height: 1.6;
 }
 
-
 a {
-    color: #333;
+    color: #f9f9f9;
     text-decoration: none;
 }
 
 a:hover {
-    color: #555;
+    color: #898888;
 }

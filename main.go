@@ -9,18 +9,19 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func newsHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("bienvenue ici vous retrouverez information sur la Musique"))
+	http.ServeFile(w, r, "./html/News.html")
 }
 
-func post2Handler(w http.ResponseWriter, r *http.Request) {
+func postHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("bjr"))
 }
 
 func main() {
 	http.HandleFunc("/", indexHandler)
 	http.Handle("/css/", http.FileServer(http.Dir(".")))
+	http.Handle("/pictures/", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/news", newsHandler)
-	http.HandleFunc("/post", post2Handler)
+	http.HandleFunc("/post", postHandler)
 
 	http.ListenAndServe(":8080", nil)
 }
