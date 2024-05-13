@@ -1,0 +1,91 @@
+-- Table Users
+CREATE TABLE Users (
+    ID INTEGER PRIMARY KEY,
+    Username TEXT,
+    Password TEXT,
+    Email TEXT,
+    RegistrationDate DATE
+);
+
+-- Table Categories
+CREATE TABLE Categories (
+    ID INTEGER PRIMARY KEY,
+    CategoryName TEXT
+);
+
+-- Table Topics
+CREATE TABLE Topics (
+    ID INTEGER PRIMARY KEY,
+    CategoryID INTEGER,
+    Title TEXT,
+    UserID INTEGER,
+    CreationDate DATE,
+    FOREIGN KEY (CategoryID) REFERENCES Categories(ID),
+    FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+
+-- Table Messages
+CREATE TABLE Messages (
+    ID INTEGER PRIMARY KEY,
+    TopicID INTEGER,
+    UserID INTEGER,
+    MessageContent TEXT,
+    PublicationDate DATE,
+    FOREIGN KEY (TopicID) REFERENCES Topics(ID),
+    FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+
+-- Table Replies
+CREATE TABLE Replies (
+    ID INTEGER PRIMARY KEY,
+    MessageID INTEGER,
+    UserID INTEGER,
+    ReplyContent TEXT,
+    PublicationDate DATE,
+    FOREIGN KEY (MessageID) REFERENCES Messages(ID),
+    FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+
+-- Table Votes
+CREATE TABLE Votes (
+    ID INTEGER PRIMARY KEY,
+    MessageOrReplyID INTEGER,
+    UserID INTEGER,
+    VoteType TEXT,
+    VoteDate DATE,
+    FOREIGN KEY (MessageOrReplyID) REFERENCES Messages(ID) ON DELETE CASCADE,
+    FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+
+-- Table Tags
+CREATE TABLE Tags (
+    ID INTEGER PRIMARY KEY,
+    TagName TEXT
+);
+
+-- Junction Table Topics_Tags
+CREATE TABLE Topics_Tags (
+    ID INTEGER PRIMARY KEY,
+    TopicID INTEGER,
+    TagID INTEGER,
+    FOREIGN KEY (TopicID) REFERENCES Topics(ID),
+    FOREIGN KEY (TagID) REFERENCES Tags(ID)
+);
+
+-- Table Roles
+CREATE TABLE Roles (
+    ID INTEGER PRIMARY KEY,
+    RoleName TEXT
+);
+
+-- Adding roles
+INSERT INTO Roles (RoleName) VALUES ('Guest');
+INSERT INTO Roles (RoleName) VALUES ('User');
+INSERT INTO Roles (RoleName) VALUES ('Moderator');
+INSERT INTO Roles (RoleName) VALUES ('Administrator');
+
+-- Adding RoleID column to Users table
+ALTER TABLE Users ADD COLUMN RoleID INTEGER;
+
+-- Linking RoleID to Roles table
+UPDATE Users SET RoleID = (SELECT ID FROM Roles WHERE RoleName = 'User') WHERE RoleID IS NULL;
