@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	_ "github.com/mattn/go-sqlite3"
+	 _ "github.com/mattn/go-sqlite3"
 )
 
 // Define the port variable
@@ -35,18 +35,28 @@ func StaticFiles(w http.ResponseWriter, r *http.Request) {
     http.ServeFile(w, r, r.URL.Path[1:])
 }
 
+
 func main() {
 	// Database connection
 	db, err := sql.Open("sqlite3", "forum.db")
 	if err != nil {
-		panic(err.Error())
+		fmt.Println("Error opening database:", err)
+		return
 	}
 	defer db.Close()
 
 	// Create the tables
-	err = CreateTable(db)
-	if err != nil {
-		panic(err.Error())
+	if err := CreateTableUser(db); err != nil {
+		fmt.Println("Error creating user table:", err)
+		return
+	}
+	if err := CreateTableCategories(db); err != nil {
+		fmt.Println("Error creating categories table:", err)
+		return
+	}
+	if err := CreateTablePost(db); err != nil {
+		fmt.Println("Error creating post table:", err)
+		return
 	}
 
 	// HTTP Handlers
@@ -54,27 +64,19 @@ func main() {
 	http.HandleFunc("/news", newsHandler)
 	http.HandleFunc("/post", postHandler)
 	http.HandleFunc("/home", indexHandler)
+	http.HandleFunc("/css/", StaticFiles)
 	http.HandleFunc("/form", formHandler)
 	http.HandleFunc("/form2", form2Handler)
-	http.HandleFunc("/css/", StaticFiles)
-	
-
-	// // Static files handlers
-	// http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-	// http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./img"))))
-	// http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("."))))
-	// http.Handle("/pictures/", http.StripPrefix("/pictures/", http.FileServer(http.Dir("."))))
 
 	// Start the server
 	fmt.Println("\n(http://localhost:8080/home) - Server started on port", port)
 	err = http.ListenAndServe(port, nil)
 	if err != nil {
-		panic(err.Error())
+		fmt.Println("Error starting server:", err)
 	}
 }
 
-// Function that creates a table User
-func CreateTableUser(db *sql.DB) {
+func CreateTableUser(db *sql.DB) error {
 	// Creating the user table if not already created
 	_, err := db.Exec(`
         CREATE TABLE IF NOT EXISTS users (
@@ -88,13 +90,10 @@ func CreateTableUser(db *sql.DB) {
 			UUID VARCHAR(36) NOT NULL
         )
     `)
-	if err != nil {
-		panic(err.Error())
-	}
+	return err
 }
 
-// Function that creates a table Categories
-func CreateTableCategories(db *sql.DB) {
+func CreateTableCategories(db *sql.DB) error {
 	// Creating the categories table if not already created
 	_, err := db.Exec(`
 		CREATE TABLE IF NOT EXISTS categories (
@@ -103,13 +102,10 @@ func CreateTableCategories(db *sql.DB) {
 			number_of_posts INTEGER DEFAULT 0
 		)
 	`)
-	if err != nil {
-		panic(err.Error())
-	}
+	return err
 }
 
-// Function that creates a table Post
-func CreateTablePost(db *sql.DB) {
+func CreateTablePost(db *sql.DB) error {
 	// Creating the post table if not already created
 	_, err := db.Exec(`
 		CREATE TABLE IF NOT EXISTS posts (
@@ -123,15 +119,5 @@ func CreateTablePost(db *sql.DB) {
 			FOREIGN KEY(author) REFERENCES users(id)
 		)
 	`)
-	if err != nil {
-		panic(err.Error())
-	}
-}
-
-// Function that creates all necessary tables
-func CreateTable(db *sql.DB) error {
-	CreateTableUser(db)
-	CreateTableCategories(db)
-	CreateTablePost(db)
-	return nil
+	return err
 }
