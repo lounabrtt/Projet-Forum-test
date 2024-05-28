@@ -38,7 +38,7 @@ func StaticFiles(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	// Database connection
-	db, err := sql.Open("sqlite3", "forum.db")
+	db, err := sql.Open("sqlite3", "database/forum.db")
 	if err != nil {
 		fmt.Println("Error opening database:", err)
 		return
@@ -60,13 +60,14 @@ func main() {
 	}
 
 	// HTTP Handlers
-	http.HandleFunc("/", formHandler)
+	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/news", newsHandler)
 	http.HandleFunc("/post", postHandler)
 	http.HandleFunc("/home", indexHandler)
 	http.HandleFunc("/css/", StaticFiles)
 	http.HandleFunc("/form", formHandler)
 	http.HandleFunc("/form2", form2Handler)
+
 
 	// Start the server
 	fmt.Println("\n(http://localhost:8080/home) - Server started on port", port)

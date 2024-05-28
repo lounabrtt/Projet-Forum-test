@@ -56,3 +56,17 @@ button {
     display: block;
     margin: 0 auto;
 }
+
+.btn {
+    background-color: #eb7371;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.btn:hover {
+    background-color: #d85c5a;
+}
