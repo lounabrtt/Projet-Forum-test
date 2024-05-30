@@ -1,4 +1,4 @@
-package main
+package function
 
 import (
 	"database/sql"
@@ -35,9 +35,9 @@ func addUser(db *sql.DB, user User) error {
 
 	return nil
 
+	fmt.Fprintf(w, "User created successfully: %s\n", username)
+    http.Redirect(w, r, "/connect", http.StatusFound)
+
 
 }
 
-func comparePasswords(password, confirmPassword string) bool {
-    return password == confirmPassword
-}

@@ -1,0 +1,56 @@
+header {
+    background-color: #051d2d; /* Couleur de fond du header */
+    color: white; /* Couleur du texte */
+    padding: 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Ombre douce */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 40px;
+}
+
+nav {
+    flex-grow: 1; /* Pour que la barre de navigation prenne autant de place que possible */
+    margin: 0;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: right; /* Aligner les éléments à droite */
+}
+
+nav ul li {
+    display: inline;
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #34495e; /* Couleur de fond au survol */
+}
+
+@media screen and (max-width: 600px) {
+    .header-content {
+        flex-direction: column; /* Pour passer à une disposition en colonne sur les petits écrans */
+        text-align: center;
+    }
+    nav {
+        margin-top: 20px; /* Espacement entre le titre et la barre de navigation sur les petits écrans */
+    }
+}
