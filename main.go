@@ -26,6 +26,10 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./html/login.html")
 }
 
+func testlikeHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "./html/testlike.html")
+}
+
 func adminHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./html/admin.html")
 }
@@ -67,7 +71,7 @@ func main() {
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/signup", createUser)
 	http.HandleFunc("/admin", adminHandler)
-
+	http.HandleFunc("/testlike", testlikeHandler)
 	// Start the server
 	fmt.Println("\n(http://localhost:8080/home) - Server started on port", port)
 	err := http.ListenAndServe(port, nil)
